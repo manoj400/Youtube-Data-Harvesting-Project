@@ -174,9 +174,9 @@ mycursor.execute("USE  youtubedetails")
 
 mycursor.execute('''CREATE TABLE if not exists channeldata (channel_name VARCHAR(255),
                                         channel_id VARCHAR(255),
-                                        total_videos VARCHAR(255),
-                                        subscribers VARCHAR(255),
-                                        views VARCHAR(255),
+                                        total_videos INT,
+                                        subscribers INT,
+                                        views INT,
                                         joined_on DATETIME)''')
 mydb.commit()
 
@@ -332,7 +332,7 @@ if selected == "Data Analysis":
 
     elif questions == '6. What is the total number of likes and dislikes for each video, and what are their corresponding video names?':
     
-        mycursor.execute("SELECT video_name,channel_name,likes_count,dislikes_count  FROM videodata GROUP BY video_name ORDER BY dislikes_count  AND likes_count DESC ")
+        mycursor.execute("SELECT video_name,channel_name,likes_count,dislikes_count  FROM videodata GROUP BY video_name ORDER BY likes_count+dislikes_count DESC ")
         out = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(out)
 
@@ -357,7 +357,7 @@ if selected == "Data Analysis":
         
     elif questions == '10. Which videos have the highest number of comments, and what are their corresponding channel names?':
         
-        mycursor.execute("SELECT channel_name, video_name,comment_count  FROM Videodata   ORDER BY comment_count DESC  ")
+        mycursor.execute("SELECT channel_name, video_name,comment_count  FROM videodata   ORDER BY comment_count DESC  ")
         out = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(out)
 
